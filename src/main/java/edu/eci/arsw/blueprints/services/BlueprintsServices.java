@@ -23,10 +23,9 @@ import org.springframework.stereotype.Service;
 public class BlueprintsServices {
    
     @Autowired
-    BlueprintsPersistence bpp=null;
+    private BlueprintsPersistence bpp;
     
     public void addNewBlueprint(Blueprint bp){
-        
     }
     
     public Set<Blueprint> getAllBlueprints(){
