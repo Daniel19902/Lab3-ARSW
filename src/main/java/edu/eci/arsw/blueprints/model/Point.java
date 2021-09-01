@@ -5,6 +5,8 @@
  */
 package edu.eci.arsw.blueprints.model;
 
+import java.util.Objects;
+
 /**
  *
  * @author hcadavid
@@ -37,7 +39,12 @@ public class Point {
     public void setY(int y) {
         this.y = y;
     }
-    
-    
-    
+
+    public boolean equals(Point o) {
+        if (o.getX() == this.x && o.getY() == this.y) {
+            return true;
+        }
+        return false;
+    }
+
 }

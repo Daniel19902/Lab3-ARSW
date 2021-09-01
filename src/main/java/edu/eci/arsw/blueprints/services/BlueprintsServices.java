@@ -25,6 +25,9 @@ public class BlueprintsServices {
    
     @Autowired
     private BlueprintsPersistence bpp;
+
+    @Autowired
+    private Filtro f;
     
     public void addNewBlueprint(Blueprint bp) throws BlueprintPersistenceException {
         bpp.saveBlueprint(bp);
@@ -43,6 +46,11 @@ public class BlueprintsServices {
      */
     public Blueprint getBlueprint(String author,String name) throws BlueprintNotFoundException{
         return bpp.getBlueprint(author,name);
+    }
+
+    public Blueprint getFiltrarBlueprint(String author,String name) throws BlueprintNotFoundException {
+        Blueprint bp = getBlueprint(author,name);
+        return f.filtrar(bp);
     }
     
     /**
