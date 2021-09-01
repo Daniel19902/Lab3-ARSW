@@ -10,9 +10,17 @@ import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.persistence.impl.InMemoryBlueprintPersistence;
+
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import edu.eci.arsw.blueprints.services.BlueprintsServices;
+import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import static org.junit.Assert.*;
 
 /**
@@ -20,7 +28,8 @@ import static org.junit.Assert.*;
  * @author hcadavid
  */
 public class InMemoryPersistenceTest {
-    
+
+
     @Test
     public void saveNewAndLoadTest() throws BlueprintPersistenceException, BlueprintNotFoundException{
         InMemoryBlueprintPersistence ibpp=new InMemoryBlueprintPersistence();
@@ -65,8 +74,38 @@ public class InMemoryPersistenceTest {
         catch (BlueprintPersistenceException ex){
             
         }
-                
-        
+    }
+
+    @Test
+    public void findBluePrintTest() throws BlueprintPersistenceException {
+        InMemoryBlueprintPersistence ibpp=new InMemoryBlueprintPersistence();
+
+        Point[] pts0=new Point[]{new Point(40, 40),new Point(15, 15)};
+        Blueprint bp0=new Blueprint("mack", "mypaint",pts0);
+        ibpp.saveBlueprint(bp0);
+
+        try {
+            Blueprint bp = ibpp.getBlueprint("mack","mypaint");
+            Assert.assertNotNull(bp);
+        }catch (BlueprintNotFoundException e){
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void findBluePrintTestByAuthor() throws BlueprintPersistenceException {
+        InMemoryBlueprintPersistence ibpp=new InMemoryBlueprintPersistence();
+
+        Point[] pts0=new Point[]{new Point(40, 40),new Point(15, 15)};
+        Blueprint bp0=new Blueprint("mack", "mypaint",pts0);
+        ibpp.saveBlueprint(bp0);
+
+        try {
+            Set<Blueprint> bp = ibpp.getBlueprintsByAuthor("mack");
+            Assert.assertNotNull(bp);
+        }catch (BlueprintNotFoundException e){
+            Assert.fail();
+        }
     }
 
 
