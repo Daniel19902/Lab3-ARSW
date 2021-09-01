@@ -10,13 +10,16 @@ import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.stereotype.Repository;
+
+import java.util.*;
 
 /**
  *
  * @author hcadavid
  */
+
+@Repository
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
 
     private final Map<Tuple<String,String>,Blueprint> blueprints=new HashMap<>();
@@ -24,10 +27,9 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
     public InMemoryBlueprintPersistence() {
         //load stub data
         Point[] pts=new Point[]{new Point(140, 140),new Point(115, 115)};
-        Blueprint bp=new Blueprint("_authorname_", "_bpname_ ",pts);
+        Blueprint bp=new Blueprint("porras", "blueprint ",pts);
         blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
-        
-    }    
+    }
     
     @Override
     public void saveBlueprint(Blueprint bp) throws BlueprintPersistenceException {
@@ -36,7 +38,7 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         }
         else{
             blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
-        }        
+        }
     }
 
     @Override
@@ -44,6 +46,24 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         return blueprints.get(new Tuple<>(author, bprintname));
     }
 
-    
-    
+    @Override
+    public Set<Blueprint> getAllBlueprint(){
+        Set<Blueprint> setBlueprint = new HashSet<>();
+        for (Tuple<String,String> tp : blueprints.keySet()) {
+            setBlueprint.add(blueprints.get(tp));
+        }
+        return setBlueprint;
+    }
+
+    @Override
+    public Set<Blueprint> getBlueprintsByAuthor(String author) throws BlueprintNotFoundException {
+        Set<Blueprint> setBlueprint = new HashSet<>();
+        for ( Tuple<String,String> tp : blueprints.keySet()){
+            if (tp.o1.equals(author)){
+                setBlueprint.add(blueprints.get(tp));
+            }
+        }
+        return setBlueprint;
+    }
+
 }

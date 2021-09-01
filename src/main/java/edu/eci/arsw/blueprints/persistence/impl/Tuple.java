@@ -34,6 +34,7 @@ public class Tuple<T1, T2> {
         if (this == obj) {
             return true;
         }
+
         if (obj == null) {
             return false;
         }
